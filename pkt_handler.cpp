@@ -56,7 +56,7 @@ void print_packet_info(const u_char* pkt, int pkt_len){
     u_char* payload = (u_char*)(pkt+TOTAL_HDR_LEN);
 
     printf("------------\n");
-
+    
     print_bytes("src mac : ", eth_header->ether_shost, 6, 0, ".");
     print_bytes("dst mac : ", eth_header->ether_dhost, 6, 0, ".");
 
@@ -67,6 +67,10 @@ void print_packet_info(const u_char* pkt, int pkt_len){
     printf("dst port : %hu\n", ntohs(tcp_header->th_dport));
 
     int len = pkt_len-TOTAL_HDR_LEN;
+    if(len==0){
+        printf("Payload is empty\n");
+        return;
+    }
     if(len>16)
         len=16;
     print_bytes("payload : ", payload, len, 0, " ");
